@@ -8,12 +8,22 @@ on:
     branches: [ "main" ]
 
 jobs:
-
-  build:
-
+  buildx:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t emhavis/pkc_ansible:$(date +%s) --push ./resources/ansible-docker/dockerfile
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        # Add support for more platforms with QEMU (optional)
+        # https://github.com/docker/setup-qemu-action
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+        with:
+          push: true
+          tags: user/app:latest
+          context: ./resources/ansible-docker
+          file: ./resources/ansible-docker/dockerfile
