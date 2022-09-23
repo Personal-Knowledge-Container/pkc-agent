@@ -1,3 +1,5 @@
+# Ansible script to install w3d examples, as provide by Prof Jungh
+#
 ---
 - name: Install PKC Web3D Example Docker instance
   hosts: all
