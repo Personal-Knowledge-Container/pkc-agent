@@ -1,0 +1,18 @@
+name: Build and push docker image of PKC's Agent into Docker Hub repository
+
+on:
+  push:
+    branches: [ "emhavis_update" ]
+  pull_request:
+    branches: [ "emhavis_update" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t emhavis/pkc_ansible:$(date +%s) --push ./resource/ansible-docker/dockerfile
