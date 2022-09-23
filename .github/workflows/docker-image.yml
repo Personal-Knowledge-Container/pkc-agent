@@ -1,10 +1,11 @@
 name: Build and push docker image of PKC's Agent into Docker Hub repository
 
 on:
+  workflow_dispatch: # Putting here is also fine!!
   push:
-    branches: [ "emhavis_update" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "emhavis_update" ]
+    branches: [ "main" ]
 
 jobs:
 
