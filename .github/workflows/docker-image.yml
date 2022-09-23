@@ -24,6 +24,6 @@ jobs:
         uses: docker/setup-buildx-action@v2
         with:
           push: true
-          tags: user/app:latest
+          tags: emhavis/pkc_ansible:latest
           context: ./resources/ansible-docker
           file: ./resources/ansible-docker/dockerfile
