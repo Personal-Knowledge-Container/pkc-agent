@@ -51,7 +51,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
-          context: ./resources/ansible-docker/dockerfile
+          context: ./resources/ansible-docker/
           platforms: linux/amd64,linux/arm/v7
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.pkc_agent_container.outputs.tags }}
