@@ -19,11 +19,15 @@ jobs:
         # https://github.com/docker/setup-qemu-action
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
-      -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-        with:
-          push: true
-          tags: emhavis/pkc_ansible:latest
-          context: ./resources/ansible-docker
-          file: ./resources/ansible-docker/dockerfile
+        
+      - name: Docker Login
+        env: |
+          $DOCKER_USER = ${{ secret.DOCKER_USER }}
+          $DOCKER_PASSWORD = ${{ secret.DOCKER_PASSWORD }}
+        run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+        
+      - name: Build & Push Docker image
+        run: docker buildx build -t emhavis/pkc_agent:latest -f |
+             ./resources/ansible-docker/dockerfile --push --platform=linux/arm64,linux/amd64 |
+             ./resources/ansible-docker
+
