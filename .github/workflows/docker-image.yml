@@ -3,9 +3,15 @@ name: Build and push docker image of PKC's Agent into Docker Hub repository
 on:
   workflow_dispatch: # Putting here is also fine!!
   push:
-    branches: [ "main" ]
+    branches:
+      - production
+      - qa
+      - dev
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - production
+      - qa
+      - dev
 
 jobs:
   build:
