@@ -4,14 +4,14 @@ on:
   workflow_dispatch: # Putting here is also fine!!
   push:
     branches:
-      - dev
-      - qa
       - production
+      - qa
+      - dev
   pull_request:
     branches:
-      - dev
-      - qa
       - production
+      - qa
+      - dev
 
 jobs:
   build:
