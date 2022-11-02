@@ -368,6 +368,9 @@ $wgCrossSiteAJAXdomains = [
   '#QTUX_FQDN'
 ];
 #
+# Enable embedd video
+wfLoadExtension("EmbedVideo");
+#
 # to resolve keycloak user issues, disable below line
 # $wgOpenIDConnect_ForceLogout = true;
 # $wgRememberMe = 'never';
