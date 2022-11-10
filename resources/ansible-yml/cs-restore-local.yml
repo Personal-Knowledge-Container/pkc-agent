@@ -44,8 +44,6 @@
       set_fact:
         db_moodle_backup_file: "{{ db_moodle_backup_file_path.path | basename }}"
 
-
-
     - name: Get dir moodle backup file
       find:
         paths: "../../backup/"

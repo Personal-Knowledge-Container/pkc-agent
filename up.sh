@@ -11,14 +11,14 @@ function prep_nginx {
     sed "s/#VS_SUBDOMAIN/$VS_SUBDOMAIN/g" ./config-template/vs.conf > ./config/vs.conf
 
     sed "s/#KCK_SUBDOMAIN/$KCK_SUBDOMAIN/g" ./config-template/kck.conf > ./config/kck.conf
-    # sed -i "s|#YOUR_DOMAIN|$YOUR_DOMAIN|g" ./config/kck.conf
+    sed -i "s|#YOUR_DOMAIN|$YOUR_DOMAIN|g" ./config/kck.conf
 
     sed "s/#QTUX_SUBDOMAIN/$QTUX_SUBDOMAIN/g" ./config-template/qtux.conf > ./config/qtux.conf
     sed "s/#SWG_SUBDOMAIN/$SWG_SUBDOMAIN/g" ./config-template/swg.conf > ./config/swg.conf
 
     sed "s/#YOUR_DOMAIN/$YOUR_DOMAIN/g" ./config-template/reverse-proxy.conf > ./config/reverse-proxy.conf
     sed "s/#YOUR_DOMAIN/$YOUR_DOMAIN/g" ./config-template/pkc.conf > ./config/pkc.conf
-    # sed -i "s|#KCK_SUBDOMAIN|$KCK_SUBDOMAIN|g" ./config/pkc.conf
+    sed -i "s|#KCK_SUBDOMAIN|$KCK_SUBDOMAIN|g" ./config/pkc.conf
 
     sed "s/#MDL_SUBDOMAIN/$MDL_SUBDOMAIN/g" ./config-template/mdl.conf > ./config/mdl.conf
     echo ""
@@ -73,7 +73,7 @@ function prep_mw_localhost {
 
 function prep_mw_domain {
     echo "Prepare LocalSettings.php file"
-    FQDN="$DEFAULT_TRANSPORT://www.$YOUR_DOMAIN"
+    FQDN="$DEFAULT_TRANSPORT://$YOUR_DOMAIN"
     KCK_AUTH_FQDN="$DEFAULT_TRANSPORT://kck.$YOUR_DOMAIN"
     MTM_FQDN="$DEFAULT_TRANSPORT://mtm.$YOUR_DOMAIN"
     MTM_ROOT="mtm.$YOUR_DOMAIN"

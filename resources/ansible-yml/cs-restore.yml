@@ -3,7 +3,10 @@
 # ansible-playbook -i hosts cs-restore.yml --extra-vars "dbname=backup-db.sql.zip imagename=backup-image-20211003.tar.gz"
 # pkc-pub-20220713T111015-image.tar.gz
 # pkc-pub-my_wiki-20220713T111015.sql.gz
-# ansible-playbook -i ./resources/config/host-pkc-back ./resources/ansible-yml/cs-restore.yml --extra-vars "dbname=pkc-pub-my_wiki-20220726T153145.sql.gz imagename=pkc-pub-20220726T153145-image.tar.gz"
+# ansible-playbook -i ./resources/config/host-pkcpub ./resources/ansible-yml/cs-restore.yml --extra-vars "dbname=huawei-pkcpub-my_wiki-20221018T160506.sql.gz imagename=huawei-pkcpub-20221018T160506-image.tar.gz"
+# /home/pi/PKC/backup/huawei-pkcpub-my_wiki-20221018T160506.sql.gz
+# /home/pi/PKC/backup/huawei-pkcpub-moodledata-20221018T160506.tar.gz
+# /home/pi/PKC/backup/huawei-pkcpub-20221018T160506-image.tar.gz
 # 
 ---
 - name: Restore database and image backup

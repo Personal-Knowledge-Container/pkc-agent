@@ -257,7 +257,20 @@ services:
       - ${SWG_PORT_PORT}:8080        # change the left side port if your host machine already has 8082 in use
     networks:
       pkcnet:
-        ipv4_address: 192.168.100.80 
+        ipv4_address: 192.168.100.80
+
+  fsl:
+    restart: always
+    container_name: xlp_fossil
+    image: lxsystems/fossil-scm-repolist-server
+    volumes:
+      - ./mountpoint/fossil:/fossils/repo        # path to fossil repo file
+    command: ["server","/fossils/repo/cives-alpha","--port","8181","--skin","ardoise","/fossils"]
+    ports:
+      - 8181:8181
+    networks:
+      pkcnet:
+        ipv4_address: 192.168.100.100
 
 networks:
   pkcnet:
