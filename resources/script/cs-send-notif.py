@@ -9,7 +9,7 @@ def send_wa_message_ext(recipient_phone_num, checked_time, server_address, check
     import json
 
     # sender / receiver dari perspektif penerima WA
-    req_message_template_id = "ba8bb46e-0caa-4c24-9be6-1bcc1af301cb"
+    req_message_template_id = "ecb20271-aea0-443e-a348-72b2c01229dc"
     req_token = get_access_token()
     req_channel_id = "e828d68b-d244-4d9c-b77f-9cda669cc76a"
     
@@ -80,38 +80,45 @@ def get_access_token():
 def main():
 
     access_token = get_access_token()
-    print(access_token)
+    # print(access_token)
+    print('Get access token')
 
     url_status = ''
     now = datetime.now()
     current_time = now.strftime("%H:%M:%S")
 
     interaction_channel_id = "e828d68b-d244-4d9c-b77f-9cda669cc76a"
-    template_id = "ba8bb46e-0caa-4c24-9be6-1bcc1af301cb"
+    template_id = "ecb20271-aea0-443e-a348-72b2c01229dc"
 
     # get from arguments
     url_to_check = sys.argv[1]
+    phone_num = sys.argv[2]
     web_response_code = urllib.request.urlopen(url_to_check).getcode()
     
     web_response_code = str(web_response_code)
+    print('Perform Check')
     if web_response_code != '200':
         url_status = 'DOWN - Response != 200'
-        send_wa_message_ext("62811111923", current_time, url_to_check, url_status)
+        print('Status != 200')
+        send_wa_message_ext(phone_num, current_time, url_to_check, url_status)
 
     else:
         page = urlopen(url_to_check)
         html_bytes = page.read()
         html = html_bytes.decode("utf-8")
         #
-        print(html)
+        # print(html)
         #
         # print(html.find("Main Page"))
         i_main_page = html.find("Main Page")
-        print(i_main_page)
+        # print(i_main_page)
         #
         if i_main_page == -1:
+            print('Server is up, but content not found')
             url_status = "Main Page not found, please check"
-            send_wa_message_ext("62811111923", current_time, url_to_check, url_status)
+            send_wa_message_ext(phone_num, current_time, url_to_check, url_status)
+        else:
+            print('Server running ok')
 
 if __name__ == '__main__':
     main()
