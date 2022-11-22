@@ -93,6 +93,7 @@ def main():
     # get from arguments
     url_to_check = sys.argv[1]
     phone_num = sys.argv[2]
+    string_to_check = sys.argv[3]
     web_response_code = urllib.request.urlopen(url_to_check).getcode()
     
     web_response_code = str(web_response_code)
@@ -110,12 +111,12 @@ def main():
         # print(html)
         #
         # print(html.find("Main Page"))
-        i_main_page = html.find("Main Page")
+        i_main_page = html.find(string_to_check)
         # print(i_main_page)
         #
         if i_main_page == -1:
             print('Server is up, but content not found')
-            url_status = "Main Page not found, please check"
+            url_status = string_to_check + " not found, please check"
             send_wa_message_ext(phone_num, current_time, url_to_check, url_status)
         else:
             print('Server running ok')
