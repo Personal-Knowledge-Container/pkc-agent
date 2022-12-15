@@ -94,32 +94,34 @@ def main():
     url_to_check = sys.argv[1]
     phone_num = sys.argv[2]
     string_to_check = sys.argv[3]
-    web_response_code = urllib.request.urlopen(url_to_check).getcode()
     
-    web_response_code = str(web_response_code)
-    print('Perform Check')
-    if web_response_code != '200':
-        url_status = 'DOWN - Response != 200'
-        print('Status != 200')
+    try:
+        print('Perform Check')
+        web_response_code = urllib.request.urlopen(url_to_check).getcode()
+        web_response_code = str(web_response_code)
+    except:
+        # send exception message here
+        url_status = "Error occured when trying to access, please check server availability " + str(url_to_check)
         send_wa_message_ext(phone_num, current_time, url_to_check, url_status)
-
     else:
-        page = urlopen(url_to_check)
-        html_bytes = page.read()
-        html = html_bytes.decode("utf-8")
-        #
-        # print(html)
-        #
-        # print(html.find("Main Page"))
-        i_main_page = html.find(string_to_check)
-        # print(i_main_page)
-        #
-        if i_main_page == -1:
-            print('Server is up, but content not found')
-            url_status = string_to_check + " not found, please check"
+        if web_response_code != '200':
+            url_status = 'DOWN - Response != 200'
+            print('Status != 200')
             send_wa_message_ext(phone_num, current_time, url_to_check, url_status)
         else:
-            print('Server running ok')
+            page = urlopen(url_to_check)
+            html_bytes = page.read()
+            html = html_bytes.decode("utf-8")
+            #
+            i_main_page = html.find(string_to_check)
+            # print(i_main_page)
+            #
+            if i_main_page == -1:
+                print('Server is up, but content not found')
+                url_status = string_to_check + " not found, please check"
+                send_wa_message_ext(phone_num, current_time, url_to_check, url_status)
+            else:
+                print('Server running ok')
 
 if __name__ == '__main__':
     main()
