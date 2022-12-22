@@ -1,0 +1,1 @@
+ecat2.pkc-lkpp.dev ansible_connection=ssh ansible_ssh_private_key_file=~/.ssh/prof-koo-aws.pem ansible_user=ubuntu domain=ecat2.pkc-lkpp.dev default_transport=https email=emhavis@gmail.com

@@ -1,5 +1,6 @@
-# Ansible script to install w3d examples, as provide by Prof Jungh
+# Ansible script to install w3d examples, as provide by Prof Jia
 #
+# cd /home/pi/PKC && ansible-playbook -i ./resources/config/hosts-pkc-dev ./resources/ansible-yml/cs-w3d-sample.yml
 ---
 - name: Install PKC Web3D Example Docker instance
   hosts: all
