@@ -31,8 +31,8 @@ function prep_local {
     if [ ! -f ./mountpoint.tar.gz ]; then
         # download mountpoint from pkc.pub
         echo "Download mountpoint"
-        wget -O mountpoint.tar.gz http://res.pkc.pub/mountpoint-mac.tar.gz
-    fi     
+        wget -O mountpoint.tar.gz https://w3d3.pkc-dev.org/res/mountpoint.tar.gz
+    fi
 
     # check if folder is already exists
     if [ ! -e ./mountpoint ]; then
@@ -43,12 +43,7 @@ function prep_local {
     # copy LocalSettings.php
     echo "Applying Localhost setting .... "
     cp ./config/LocalSettings.php ./mountpoint/LocalSettings.php
-    # cp ./config/config.ini.php-local ./mountpoint/matomo/config/config.ini.php
-    # cp ./config-template/LocalSettings-local.php ./mountpoint/LocalSettings.php
-    # config/app.ini
     cp ./config/app.ini ./mountpoint/gitea/gitea/conf/app.ini
-    # cp ./config/update-mtm-config.sql ./mountpoint/backup_restore/mariadb/update-mtm-config.sql
-    # docker composre file, consist of minimal installation
     cp ./config-template/docker-compose-local.yml docker-compose.yml
 }
 
@@ -56,7 +51,7 @@ function prep_mw_localhost {
     echo "Prepare LocalSettings.php file"
     FQDN="$DEFAULT_TRANSPORT://$YOUR_DOMAIN:$PORT_NUMBER"
     # KCK_AUTH_FQDN="$DEFAULT_TRANSPORT://$YOUR_DOMAIN:$KCK_PORT_NUMBER"
-    KCK_AUTH_FQDN="https://kck.pkc-ops.org"
+    KCK_AUTH_FQDN="https://kck.pkc.pub"
     MTM_FQDN="$DEFAULT_TRANSPORT://$YOUR_DOMAIN:$MATOMO_PORT_NUMBER"
     GIT_FQDN="$DEFAULT_TRANSPORT://$YOUR_DOMAIN:$GITEA_PORT_NUMBER"
     #
