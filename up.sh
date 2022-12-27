@@ -31,7 +31,7 @@ function prep_local {
     if [ ! -f ./mountpoint.tar.gz ]; then
         # download mountpoint from pkc.pub
         echo "Download mountpoint"
-        wget -O mountpoint.tar.gz https://w3d3.pkc-dev.org/res/mountpoint.tar.gz
+        wget -O mountpoint.tar.gz https://w3d3.pkc-dev.org/res/mountpoint-mac.tar.gz
     fi
 
     # check if folder is already exists
@@ -39,6 +39,10 @@ function prep_local {
         echo "Extracting mountpoint"
         tar -xvf mountpoint.tar.gz > /dev/null 2>&1
     fi
+
+    # modify /etc/hosts
+    sudo echo "127.0.0.1 pkc.local" >> /etc/hosts
+    sudo echo "127.0.0.1 kck.pkc.local" >> /etc/hosts
 
     # copy LocalSettings.php
     echo "Applying Localhost setting .... "
