@@ -45,6 +45,7 @@ function prep_local {
     # sudo echo "127.0.0.1 kck.pkc.local" >> /etc/hosts
 
     # # copy LocalSettings.php
+    
     echo "Applying Localhost setting .... "
     # cp ./config/LocalSettings.php ./mountpoint/LocalSettings.php
     # cp ./config/app.ini ./mountpoint/gitea/gitea/conf/app.ini
@@ -118,7 +119,7 @@ echo "Mark Started Process at $(date)"
 
 if [ -f .env ]; then
     export $(cat .env | grep -v '#' | awk '/=/ {print $1}')
-    if [ "$YOUR_DOMAIN" == "localhost" ]; then {
+    if [ "$YOUR_DOMAIN" == "pkc.local" ]; then {
         GITEA_SUBDOMAIN=$YOUR_DOMAIN:$GITEA_PORT_NUMBER
         PMA_SUBDOMAIN=$YOUR_DOMAIN:$PHP_MA
         MTM_SUBDOMAIN=$YOUR_DOMAIN:$MATOMO_PORT_NUMBER

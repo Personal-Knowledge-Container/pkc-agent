@@ -1,1 +1,1 @@
-host.docker-internal ansible_connection=ssh ansible_ssh_private_key_file=~/.ssh/prof-koo-aws.pem ansible_user=emhavis domain=pkc.local default_transport=http pkc_install_root_dir=/home/users/emhavis email=emhavis@gmail.com
+host.docker.internal ansible_connection=ssh ansible_ssh_private_key_file=~/.ssh/local-key.pem ansible_user=emhavis domain=pkc.local default_transport=http pkc_install_root_dir=/home/users/emhavis email=emhavis@gmail.com
