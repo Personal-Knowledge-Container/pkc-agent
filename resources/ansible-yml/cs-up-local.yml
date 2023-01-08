@@ -9,11 +9,16 @@
     - name: Download mountpoint file/amd64
       get_url:
         url: https://w3d3.pkc-dev.org/res/mountpoint-mac.tar.gz
-        dest: "{{ pkc_install_root_dir }}"
+        dest: "{{ pkc_install_root_dir }}/mountpoint.tar.gz"
       when: ansible_facts['os_family'] == "Darwin"
       async: 1200   # Maximum allowed time in Seconds
       poll: 15      # Polling Interval in Seconds
       register: scrout
+
+    - name: create PKC folder
+      file:
+        path: "{{ pkc_install_root_dir }}/cs"
+        state: directory
       
     - name: Extract Mountpoint
       shell: "tar -xvf ./mountpoint.tar.gz"
