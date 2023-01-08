@@ -45,7 +45,7 @@ function prep_local {
     # sudo echo "127.0.0.1 kck.pkc.local" >> /etc/hosts
 
     # # copy LocalSettings.php
-    # echo "Applying Localhost setting .... "
+    echo "Applying Localhost setting .... "
     # cp ./config/LocalSettings.php ./mountpoint/LocalSettings.php
     # cp ./config/app.ini ./mountpoint/gitea/gitea/conf/app.ini
     # cp ./config-template/docker-compose-local.yml docker-compose.yml
