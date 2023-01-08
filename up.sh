@@ -27,28 +27,28 @@ function prep_nginx {
 #####################################################################
 function prep_local {
 
-    # check if we already have mountpoint file
-    if [ ! -f ./mountpoint.tar.gz ]; then
-        # download mountpoint from pkc.pub
-        echo "Download mountpoint"
-        wget -O mountpoint.tar.gz https://w3d3.pkc-dev.org/res/mountpoint-mac.tar.gz
-    fi
+    # # check if we already have mountpoint file
+    # if [ ! -f ./mountpoint.tar.gz ]; then
+    #     # download mountpoint from pkc.pub
+    #     echo "Download mountpoint"
+    #     wget -O mountpoint.tar.gz https://w3d3.pkc-dev.org/res/mountpoint-mac.tar.gz
+    # fi
 
-    # check if folder is already exists
-    if [ ! -e ./mountpoint ]; then
-        echo "Extracting mountpoint"
-        tar -xvf mountpoint.tar.gz > /dev/null 2>&1
-    fi
+    # # check if folder is already exists
+    # if [ ! -e ./mountpoint ]; then
+    #     echo "Extracting mountpoint"
+    #     tar -xvf mountpoint.tar.gz > /dev/null 2>&1
+    # fi
 
-    # modify /etc/hosts
-    sudo echo "127.0.0.1 pkc.local" >> /etc/hosts
-    sudo echo "127.0.0.1 kck.pkc.local" >> /etc/hosts
+    # # modify /etc/hosts
+    # sudo echo "127.0.0.1 pkc.local" >> /etc/hosts
+    # sudo echo "127.0.0.1 kck.pkc.local" >> /etc/hosts
 
-    # copy LocalSettings.php
-    echo "Applying Localhost setting .... "
-    cp ./config/LocalSettings.php ./mountpoint/LocalSettings.php
-    cp ./config/app.ini ./mountpoint/gitea/gitea/conf/app.ini
-    cp ./config-template/docker-compose-local.yml docker-compose.yml
+    # # copy LocalSettings.php
+    # echo "Applying Localhost setting .... "
+    # cp ./config/LocalSettings.php ./mountpoint/LocalSettings.php
+    # cp ./config/app.ini ./mountpoint/gitea/gitea/conf/app.ini
+    # cp ./config-template/docker-compose-local.yml docker-compose.yml
 }
 
 function prep_mw_localhost {
