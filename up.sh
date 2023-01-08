@@ -149,7 +149,7 @@ if [ -f .env ]; then
 
         # run ansible playbook
         echo "Running localhost ansible playbook, please provide password when ask."
-        ansible-playbook ./resources/ansible-yml/cs-up-local.yml --connection=local --ask-become-pass
+        ansible-playbook -i ./resources/config/hosts ./resources/ansible-yml/cs-up-local.yml --ask-become-pass
         # 
         echo "Wait 10 second for service to ready"
         sleep 5 
