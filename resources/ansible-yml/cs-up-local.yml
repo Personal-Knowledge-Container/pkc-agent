@@ -10,7 +10,7 @@
       get_url:
         url: https://w3d3.pkc-dev.org/res/mountpoint-mac.tar.gz
         dest: "{{ pkc_install_root_dir }}"
-      when: ansible_architecture == 'Darwin'
+      when: ansible_facts['os_family'] == "Darwin"
       async: 1200   # Maximum allowed time in Seconds
       poll: 15      # Polling Interval in Seconds
       register: scrout
