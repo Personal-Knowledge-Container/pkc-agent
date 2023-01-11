@@ -49,16 +49,16 @@
         - PATH: "{{ ansible_env.PATH}}:/usr/local/bin"
 
     - name: Execute Docker-compose
-      command: chdir={{ pkc_install_root_dir }} "docker-compose up -d -f"
+      command: chdir={{ pkc_install_root_dir }} "docker-compose up -d"
       environment:
         - PATH: "{{ ansible_env.PATH}}:/usr/local/bin"
 
     - name: Execute Update on Hosts file
-      command: "{{ pkc_install_root_dir }}/cs/update-hosts.sh"
+      command: "sudo {{ pkc_install_root_dir }}/cs/update-hosts.sh"
       become: yes
 
     - name: Run update script
-      shell: "{{ pkc_install_root_dir }}/cs/update-sw.sh || /usr/bin/true"
+      shell: "sudo {{ pkc_install_root_dir }}/cs/update-sw.sh || /usr/bin/true"
       register: update_script
       ignore_errors: yes    
 
