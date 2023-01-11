@@ -40,6 +40,11 @@
         - {src: '../script/update-sw.sh', dest: '{{ pkc_install_root_dir }}/cs/update-sw.sh'}
         - {src: '../script/update-hosts.sh', dest: '{{ pkc_install_root_dir }}/cs/update-hosts.sh'}
 
+    - name: Changing perm of "update-sw.sh", adding "+x"
+      file: dest={{ pkc_install_root }}/cs/update-sw.sh mode=a+x
+
+    - name: Changing perm of "update-hosts.sh", adding "+x"
+      file: dest={{ pkc_install_root }}/cs/update-hosts.sh mode=a+x
 
     - name: Check docker installation on localhost machine
       shell: "docker info | grep Docker"
@@ -60,7 +65,7 @@
     - name: Run update script
       shell: "sudo {{ pkc_install_root_dir }}/cs/update-sw.sh || /usr/bin/true"
       register: update_script
-      ignore_errors: yes    
+      ignore_errors: yes
 
     - name: Print debug
       ansible.builtin.debug:
