@@ -21,7 +21,7 @@
         state: directory
       
     - name: Extract Mountpoint
-      shell: "tar -xvf ./mountpoint.tar.gz"
+      shell: "tar -xvf {{ pkc_install_root_dir }}/mountpoint.tar.gz"
       args:
         chdir: "{{ pkc_install_root_dir }}/cs"
         warn: no
@@ -32,10 +32,10 @@
         dest: "{{ item.dest }}"
         remote_src: no
       loop:
-        - {src: '../../config/LocalSettings.php', dest: './cs/mountpoint/LocalSettings.php'}
-        - {src: '../../config-template/timezone', dest: './cs/mountpoint/timezone'}
-        - {src: '../../config-template/localtime', dest: './cs/mountpoint/localtime'}
-        - {src: '../../config-template/docker-compose-local.yml', dest: './cs/docker-compose.yml'}
+        - {src: '../../config/LocalSettings.php', dest: '{{ pkc_install_root_dir }}/cs/mountpoint/LocalSettings.php'}
+        - {src: '../../config-template/timezone', dest: '{{ pkc_install_root_dir }}/cs/mountpoint/timezone'}
+        - {src: '../../config-template/localtime', dest: '{{ pkc_install_root_dir }}/cs/mountpoint/localtime'}
+        - {src: '../../config-template/docker-compose-local.yml', dest: '{{ pkc_install_root_dir }}/cs/docker-compose.yml'}
 
     - name: Check docker installation on localhost machine
       shell: "docker info | grep Docker"
