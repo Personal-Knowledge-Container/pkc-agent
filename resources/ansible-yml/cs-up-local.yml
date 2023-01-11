@@ -36,21 +36,27 @@
         - {src: '../../config-template/timezone', dest: '{{ pkc_install_root_dir }}/cs/mountpoint/timezone'}
         - {src: '../../config-template/localtime', dest: '{{ pkc_install_root_dir }}/cs/mountpoint/localtime'}
         - {src: '../../config-template/docker-compose-local.yml', dest: '{{ pkc_install_root_dir }}/cs/docker-compose.yml'}
+        - {src: '../../.env', dest: '{{ pkc_install_root_dir }}/cs/.env'}
+        - {src: '../script/update-sw.sh', dest: '{{ pkc_install_root_dir }}/cs/update-sw.sh'}
 
     - name: Check docker installation on localhost machine
       shell: "docker info | grep Docker"
       register: docker_output
       ignore_errors: yes
+      environment:
+        - PATH: "{{ ansible_env.PATH}}:/usr/local/bin"
 
     - name: Execute Docker-compose
-      command: "docker-compose up -d"  
+      command: "docker-compose up -d"
+      environment:
+        - PATH: "{{ ansible_env.PATH}}:/usr/local/bin"
 
     - name: Execute Update on Hosts file
-      command: "../script/update-hosts.sh"
+      command: "{{ pkc_install_root_dir }}/cs/script/update-hosts.sh"
       become: yes
 
-    - name: Check docker installation on localhost machine
-      shell: "./resources/script/update-sw.sh || /usr/bin/true"
+    - name: Run update script
+      shell: "{{ pkc_install_root_dir }}/cs/resources/script/update-sw.sh || /usr/bin/true"
       register: update_script
       ignore_errors: yes    
 
