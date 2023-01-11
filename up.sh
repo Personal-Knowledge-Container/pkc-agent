@@ -116,6 +116,10 @@ function prep_vars {
 
 # Read .env, and present our plan to user
 echo "Mark Started Process at $(date)"
+# Prepare .env file
+echo "Preparing env file"
+ansible-playbook -i ./resources/config/hosts ./resources/ansible-yml/cs-prep-env.yml
+
 
 if [ -f .env ]; then
     export $(cat .env | grep -v '#' | awk '/=/ {print $1}')
@@ -171,10 +175,6 @@ if [ -f .env ]; then
         open http://pkc.local
 
     } else {
-
-        # Prepare .env file
-        echo "Preparing env file"
-        ansible-playbook -i ./resources/config/hosts ./resources/ansible-yml/cs-prep-env.yml
 
         # read the .env file
         export $(cat .env | grep -v '#' | awk '/=/ {print $1}')
