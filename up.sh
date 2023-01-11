@@ -61,8 +61,8 @@ function prep_mw_localhost {
     GIT_FQDN="$DEFAULT_TRANSPORT://$YOUR_DOMAIN:$GITEA_PORT_NUMBER"
     #
     sed "s|#MTM_FQDN|$MTM_FQDN|g" ./config-template/LocalSettings-Local.php > ./config/LocalSettings.php
-    sed -i '' "s|#YOUR_FQDN|$FQDN|g" ./config/LocalSettings.php
-    sed -i '' "s|#KCK_SUBDOMAIN|$KCK_AUTH_FQDN|g" ./config/LocalSettings.php
+    sed -i "s|#YOUR_FQDN|$FQDN|g" ./config/LocalSettings.php
+    sed -i "s|#KCK_SUBDOMAIN|$KCK_AUTH_FQDN|g" ./config/LocalSettings.php
     #
     sed "s|#MTM_SUBDOMAIN|$MTM_FQDN|g" ./config-template/config.ini.php > ./config/config.ini.php
     #
