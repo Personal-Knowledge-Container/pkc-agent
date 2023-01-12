@@ -40,15 +40,15 @@
         - {src: '../script/update-sw.sh', dest: '{{ pkc_install_root_dir }}/cs/update-sw.sh'}
         - {src: '../script/update-hosts.sh', dest: '{{ pkc_install_root_dir }}/cs/update-hosts.sh'}
 
-    - name: Changing perm of "update-sw.sh", adding "+x"
+    - name: add exec permission update-sw.sh
       file: 
-        - path: "{{ pkc_install_root_dir }}/cs/update-sw.sh"
-        - mode: '+x'
+        path: "{{ pkc_install_root_dir }}/cs/update-sw.sh"
+        mode: '+x'
 
-    - name: Changing perm of "update-hosts.sh", adding "+x"
+    - name: add exec permission update-hosts.sh
       file: 
-        - path: "{{ pkc_install_root_dir }}/cs/update-hosts.sh"
-        - mode: '+x'
+        path: "{{ pkc_install_root_dir }}/cs/update-hosts.sh"
+        mode: '+x'
 
     - name: Check docker installation on localhost machine
       shell: "docker info | grep Docker"
