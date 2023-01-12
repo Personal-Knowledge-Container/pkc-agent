@@ -1,6 +1,8 @@
 ---
 - name: install and provisioning dockers PKC Server on docker's host
   hosts: all
+  vars:
+    ansible_ssh_strict_host_key_checking: False
 
   tasks:
   - name: Localhost macOS installation process
@@ -63,6 +65,8 @@
       ignore_errors: yes
       environment:
         - PATH: "{{ ansible_env.PATH}}:/usr/local/bin"
+      args:
+        chdir: "{{ pkc_install_root_dir }}/cs"
 
     - name: Execute Update on Hosts file
       command: "sudo {{ pkc_install_root_dir }}/cs/update-hosts.sh"
