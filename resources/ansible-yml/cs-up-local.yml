@@ -41,10 +41,14 @@
         - {src: '../script/update-hosts.sh', dest: '{{ pkc_install_root_dir }}/cs/update-hosts.sh'}
 
     - name: Changing perm of "update-sw.sh", adding "+x"
-      file: dest="{{ pkc_install_root_dir }}/cs/update-sw.sh mode=a+x"
+      file: 
+        - path: "{{ pkc_install_root_dir }}/cs/update-sw.sh"
+        - mode: '+x'
 
     - name: Changing perm of "update-hosts.sh", adding "+x"
-      file: dest="{{ pkc_install_root_dir }}/cs/update-hosts.sh mode=a+x"
+      file: 
+        - path: "{{ pkc_install_root_dir }}/cs/update-hosts.sh"
+        - mode: '+x'
 
     - name: Check docker installation on localhost machine
       shell: "docker info | grep Docker"
@@ -54,7 +58,9 @@
         - PATH: "{{ ansible_env.PATH}}:/usr/local/bin"
 
     - name: Execute Docker-compose
-      command: chdir={{ pkc_install_root_dir }}/cs "docker-compose up -d"
+      shell: "docker-compose up -d"
+      register: docker_output
+      ignore_errors: yes
       environment:
         - PATH: "{{ ansible_env.PATH}}:/usr/local/bin"
 
