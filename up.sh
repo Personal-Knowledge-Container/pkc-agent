@@ -167,7 +167,7 @@ if [ -f .env ]; then
         eval $CMD_VARS >/dev/null
     
         # run update hosts script
-        CMD_VARS="ssh -i $ansible_ssh_private_key_file $ansible_user@$ansible_host_name 'cd $pkc_install_root_dir/cs; ./cs/update-sw.sh'"
+        CMD_VARS="ssh -i $ansible_ssh_private_key_file $ansible_user@$ansible_host_name 'export PATH="$PATH::/usr/local/bin"; cd $pkc_install_root_dir/cs; ./cs/update-sw.sh'"
         echo $CMD_VARS
         eval $CMD_VARS > /dev/null
 
