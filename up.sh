@@ -112,6 +112,7 @@ function prep_vars {
     echo $domain
     echo $default_transport
     echo $email
+    echo $pkc_install_root_dir
 }
 
 # Read .env, and present our plan to user
@@ -154,6 +155,18 @@ if [ -f .env ]; then
         # run ansible playbook
         echo "Running localhost ansible playbook, please provide password when ask."
         ansible-playbook -i ./resources/config/hosts ./resources/ansible-yml/cs-up-local.yml --ask-become-pass
+
+        # run docker-compose
+        CMD_VARS="ssh -i $ansible_ssh_private_key_file $ansible_user@$ansible_host_name 'cd $pkc_install_root_dir; docker-compose pull'"
+        echo "docker-compose pull"
+        eval $CMD_VARS >/dev/null
+
+        CMD_VARS="ssh -i $ansible_ssh_private_key_file $ansible_user@$ansible_host_name 'cd $pkc_install_root_dir; docker-compose up -d'"
+        echo "docker-compose up -d"
+        eval $CMD_VARS > /dev/null
+
+        # run update hosts script
+
         # 
         echo "Wait 10 second for service to ready"
         sleep 5 
