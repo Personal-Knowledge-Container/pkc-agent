@@ -2,7 +2,7 @@ CURRENT_TIME = $(shell date +'%y.%m.%d %H:%M:%S')
 CURRENT_TAG = "dev"
 
 build: 
-	docker build -t emhavis/pkc_agent:${CURRENT_TAG} --no-cache .
+	docker build -t emhavis/pkc_agent:${CURRENT_TAG} .
 
 buildAndPush:
 	docker build -t emhavis/pkc_agent:${CURRENT_TAG} .

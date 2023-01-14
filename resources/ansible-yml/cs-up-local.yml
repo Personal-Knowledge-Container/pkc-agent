@@ -60,7 +60,7 @@
         - PATH: "{{ ansible_env.PATH}}:/usr/local/bin"
 
     - name: Execute Docker-compose
-      shell: "docker-compose up -d"
+      shell: "security -v unlock-keychain ~/Library/Keychains/login.keychain-db && docker-compose up -d"
       register: docker_output
       ignore_errors: yes
       environment:
