@@ -166,6 +166,9 @@ if [ -f .env ]; then
         eval $CMD_VARS > /dev/null
 
         # run update hosts script
+        CMD_VARS="ssh -i $ansible_ssh_private_key_file $ansible_user@$ansible_host_name 'cd $pkc_install_root_dir; ./cs/update-hosts.sh'"
+        echo "docker-compose up -d"
+        eval $CMD_VARS > /dev/null
 
         # 
         echo "Wait 10 second for service to ready"
