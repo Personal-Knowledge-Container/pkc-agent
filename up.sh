@@ -147,6 +147,7 @@ if [ -f .env ]; then
         read -p "Press [Enter] key to continue..."
         echo "--------------------------------------------------------"
 
+        prep_vars
         prep_mw_localhost
         read -p "finished prepare Configuration for Localhost config Press [Enter] key to continue..."
         prep_local
@@ -157,16 +158,16 @@ if [ -f .env ]; then
         ansible-playbook -i ./resources/config/hosts ./resources/ansible-yml/cs-up-local.yml --ask-become-pass
 
         # run docker-compose
-        CMD_VARS="ssh -i $ansible_ssh_private_key_file $ansible_user@$ansible_host_name 'cd $pkc_install_root_dir; docker-compose pull'"
+        CMD_VARS="ssh -i $ansible_ssh_private_key_file $ansible_user@$ansible_host_name 'export PATH="$PATH::/usr/local/bin"; cd $pkc_install_root_dir/cs; docker-compose pull'"
         echo $CMD_VARS
         eval $CMD_VARS >/dev/null
-
-        CMD_VARS="ssh -i $ansible_ssh_private_key_file $ansible_user@$ansible_host_name 'cd $pkc_install_root_dir; ./cs/update-hosts.sh'"
+        
+        CMD_VARS="ssh -i $ansible_ssh_private_key_file $ansible_user@$ansible_host_name 'export PATH="$PATH::/usr/local/bin"; cd $pkc_install_root_dir/cs; docker-compose up -d'"
         echo $CMD_VARS
-        eval $CMD_VARS > /dev/null
-
+        eval $CMD_VARS >/dev/null
+    
         # run update hosts script
-        CMD_VARS="ssh -i $ansible_ssh_private_key_file $ansible_user@$ansible_host_name 'cd $pkc_install_root_dir; ./cs/update-sw.sh'"
+        CMD_VARS="ssh -i $ansible_ssh_private_key_file $ansible_user@$ansible_host_name 'cd $pkc_install_root_dir/cs; ./cs/update-sw.sh'"
         echo $CMD_VARS
         eval $CMD_VARS > /dev/null
 

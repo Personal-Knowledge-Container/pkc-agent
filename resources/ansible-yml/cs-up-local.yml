@@ -68,9 +68,9 @@
     #   args:
     #     chdir: "{{ pkc_install_root_dir }}/cs"
 
-    # - name: Execute Update on Hosts file
-    #   command: "sudo {{ pkc_install_root_dir }}/cs/update-hosts.sh"
-    #   become: yes
+    - name: Execute Update on Hosts file
+      command: "sudo {{ pkc_install_root_dir }}/cs/update-hosts.sh"
+      become: yes
 
     # - name: Run update script
     #   shell: "sudo {{ pkc_install_root_dir }}/cs/update-sw.sh || /usr/bin/true"
