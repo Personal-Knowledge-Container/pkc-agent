@@ -158,16 +158,16 @@ if [ -f .env ]; then
 
         # run docker-compose
         CMD_VARS="ssh -i $ansible_ssh_private_key_file $ansible_user@$ansible_host_name 'cd $pkc_install_root_dir; docker-compose pull'"
-        echo "docker-compose pull"
+        echo $CMD_VARS
         eval $CMD_VARS >/dev/null
 
-        CMD_VARS="ssh -i $ansible_ssh_private_key_file $ansible_user@$ansible_host_name 'cd $pkc_install_root_dir; docker-compose up -d'"
-        echo "docker-compose up -d"
+        CMD_VARS="ssh -i $ansible_ssh_private_key_file $ansible_user@$ansible_host_name 'cd $pkc_install_root_dir; ./cs/update-hosts.sh'"
+        echo $CMD_VARS
         eval $CMD_VARS > /dev/null
 
         # run update hosts script
-        CMD_VARS="ssh -i $ansible_ssh_private_key_file $ansible_user@$ansible_host_name 'cd $pkc_install_root_dir; ./cs/update-hosts.sh'"
-        echo "docker-compose up -d"
+        CMD_VARS="ssh -i $ansible_ssh_private_key_file $ansible_user@$ansible_host_name 'cd $pkc_install_root_dir; ./cs/update-sw.sh'"
+        echo $CMD_VARS
         eval $CMD_VARS > /dev/null
 
         # 
