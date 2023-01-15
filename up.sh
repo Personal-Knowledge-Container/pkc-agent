@@ -158,26 +158,29 @@ if [ -f .env ]; then
         ansible-playbook -i ./resources/config/hosts ./resources/ansible-yml/cs-up-local.yml --ask-become-pass
 
         # run docker-compose
-        CMD_VARS="ssh -i $ansible_ssh_private_key_file $ansible_user@$ansible_host_name 'security -v unlock-keychain ~/Library/Keychains/login.keychain-db; export PATH="$PATH:/usr/local/bin"; cd $pkc_install_root_dir/cs; docker-compose pull'"
-        echo $CMD_VARS
-        eval $CMD_VARS >/dev/null
+        # CMD_VARS="ssh -i $ansible_ssh_private_key_file $ansible_user@$ansible_host_name 'security -v unlock-keychain ~/Library/Keychains/login.keychain-db; export PATH="$PATH:/usr/local/bin"; cd $pkc_install_root_dir/cs; docker-compose pull'"
+        # echo $CMD_VARS
+        # eval $CMD_VARS >/dev/null
+        # docker-compose pull
         
-        CMD_VARS="ssh -i $ansible_ssh_private_key_file $ansible_user@$ansible_host_name 'security -v unlock-keychain ~/Library/Keychains/login.keychain-db; export PATH="$PATH:/usr/local/bin"; cd $pkc_install_root_dir/cs; docker-compose up -d'"
-        echo $CMD_VARS
-        eval $CMD_VARS >/dev/null
+        # CMD_VARS="ssh -i $ansible_ssh_private_key_file $ansible_user@$ansible_host_name 'security -v unlock-keychain ~/Library/Keychains/login.keychain-db; export PATH="$PATH:/usr/local/bin"; cd $pkc_install_root_dir/cs; docker-compose up -d'"
+        # echo $CMD_VARS
+        # eval $CMD_VARS >/dev/null
+        # docker-compose up -d
     
         # run update hosts script
-        CMD_VARS="ssh -i $ansible_ssh_private_key_file $ansible_user@$ansible_host_name 'export PATH="$PATH:/usr/local/bin"; cd $pkc_install_root_dir/cs; ./update-sw.sh'"
-        echo $CMD_VARS
-        eval $CMD_VARS > /dev/null
+        # CMD_VARS="ssh -i $ansible_ssh_private_key_file $ansible_user@$ansible_host_name 'export PATH="$PATH:/usr/local/bin"; cd $pkc_install_root_dir/cs; ./update-sw.sh'"
+        # echo $CMD_VARS
+        # eval $CMD_VARS > /dev/null
+        # ./cs/update-sw.sh
 
         # 
-        echo "Wait 10 second for service to ready"
-        sleep 5 
+        # echo "Wait 10 second for service to ready"
+        # sleep 5 
 
         # run maintenance script
         echo "Running maintenance script"
-        docker exec xlp_mediawiki php /var/www/html/maintenance/update.php --quick # > /dev/null 2>&1
+        # docker exec xlp_mediawiki php /var/www/html/maintenance/update.php --quick # > /dev/null 2>&1
         # ansible-playbook ./resources/ansible-yml/cs-test.yml --connection=local
 
         # display login information
@@ -189,7 +192,7 @@ if [ -f .env ]; then
         echo "your browser "
         echo "http://pkc.local"
         echo "---------------------------------------------------------------------------"
-        open http://pkc.local
+        # open http://pkc.local
 
     } else {
 
