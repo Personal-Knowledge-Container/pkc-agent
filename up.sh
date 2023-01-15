@@ -149,9 +149,12 @@ if [ -f .env ]; then
 
         prep_vars
         prep_mw_localhost
-        read -p "finished prepare Configuration for Localhost config Press [Enter] key to continue..."
+        echo "finished prepare Configuration for Localhost config"
+        # read -p "finished prepare Configuration for Localhost config Press [Enter] key to continue..."
+
         prep_local
-        read -p "finished prepare mountpoint for Localhost Press [Enter] key to continue..."
+        # read -p "finished prepare mountpoint for Localhost Press [Enter] key to continue..."
+        echo "finished prepare mountpoint for Localhost "
 
         # run ansible playbook
         echo "Running localhost ansible playbook, please provide password when ask."
@@ -175,8 +178,8 @@ if [ -f .env ]; then
         # ./cs/update-sw.sh
 
         # 
-        # echo "Wait 10 second for service to ready"
-        # sleep 5 
+        echo "Wait 10 second for service to ready"
+        sleep 5 
 
         # run maintenance script
         echo "Running maintenance script"
