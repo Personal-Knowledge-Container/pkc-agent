@@ -1,27 +1,81 @@
 ---
-- name: install and provisioning dockers PKC Server on Localhost
-  hosts: localhost
+- name: install and provisioning dockers PKC Server on docker's host
+  hosts: all
+  vars:
+    ansible_ssh_strict_host_key_checking: False
 
   tasks:
   - name: Localhost macOS installation process
     block:
+    
+    - name: Download mountpoint file/amd64
+      get_url:
+        url: https://w3d3.pkc-dev.org/res/mountpoint-mac.tar.gz
+        dest: "{{ pkc_install_root_dir }}/mountpoint.tar.gz"
+      when: ansible_facts['os_family'] == "Darwin"
+      async: 1200   # Maximum allowed time in Seconds
+      poll: 15      # Polling Interval in Seconds
+      register: scrout
+
+    - name: create PKC folder
+      file:
+        path: "{{ pkc_install_root_dir }}/cs"
+        state: directory
+      
+    - name: Extract Mountpoint
+      shell: "tar -xvf {{ pkc_install_root_dir }}/mountpoint.tar.gz"
+      args:
+        chdir: "{{ pkc_install_root_dir }}/cs"
+        warn: no
+
+    - name: Upload LocalSettings.php and other setting
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        remote_src: no
+      loop:
+        - {src: '../../config/LocalSettings.php', dest: '{{ pkc_install_root_dir }}/cs/mountpoint/LocalSettings.php'}
+        - {src: '../../config-template/timezone', dest: '{{ pkc_install_root_dir }}/cs/mountpoint/timezone'}
+        - {src: '../../config-template/localtime', dest: '{{ pkc_install_root_dir }}/cs/mountpoint/localtime'}
+        - {src: '../../config-template/docker-compose-local.yml', dest: '{{ pkc_install_root_dir }}/cs/docker-compose.yml'}
+        - {src: '../../.env', dest: '{{ pkc_install_root_dir }}/cs/.env'}
+        - {src: '../script/update-sw.sh', dest: '{{ pkc_install_root_dir }}/cs/update-sw.sh'}
+        - {src: '../script/update-hosts.sh', dest: '{{ pkc_install_root_dir }}/cs/update-hosts.sh'}
+
+    - name: add exec permission update-sw.sh
+      file: 
+        path: "{{ pkc_install_root_dir }}/cs/update-sw.sh"
+        mode: '+x'
+
+    - name: add exec permission update-hosts.sh
+      file: 
+        path: "{{ pkc_install_root_dir }}/cs/update-hosts.sh"
+        mode: '+x'
 
     - name: Check docker installation on localhost machine
       shell: "docker info | grep Docker"
       register: docker_output
       ignore_errors: yes
+      environment:
+        - PATH: "{{ ansible_env.PATH}}:/usr/local/bin"
 
-    - name: Execute Docker-compose
-      command: "docker-compose up -d"  
+    # - name: Execute Docker-compose
+    #   shell: "security -v unlock-keychain ~/Library/Keychains/login.keychain-db && docker-compose up -d"
+    #   register: docker_output
+    #   ignore_errors: yes
+    #   environment:
+    #     - PATH: "{{ ansible_env.PATH}}:/usr/local/bin"
+    #   args:
+    #     chdir: "{{ pkc_install_root_dir }}/cs"
 
     - name: Execute Update on Hosts file
-      command: "../script/update-hosts.sh"
+      command: "sudo {{ pkc_install_root_dir }}/cs/update-hosts.sh"
       become: yes
 
-    - name: Check docker installation on localhost machine
-      shell: "./resources/script/update-sw.sh || /usr/bin/true"
-      register: update_script
-      ignore_errors: yes    
+    # - name: Run update script
+    #   shell: "sudo {{ pkc_install_root_dir }}/cs/update-sw.sh || /usr/bin/true"
+    #   register: update_script
+    #   ignore_errors: yes
 
     - name: Print debug
       ansible.builtin.debug:
