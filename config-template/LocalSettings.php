@@ -15,7 +15,6 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 	exit;
 }
 
-
 ## Uncomment this to disable output compression
 # $wgDisableOutputCompression = true;
 $wgSitename = "PKC";
@@ -367,6 +366,9 @@ wfLoadExtension( 'SwaggerDoc' );
 $wgCrossSiteAJAXdomains = [
   '#QTUX_FQDN'
 ];
+#
+# Enable embedd video
+wfLoadExtension("EmbedVideo");
 #
 # to resolve keycloak user issues, disable below line
 # $wgOpenIDConnect_ForceLogout = true;

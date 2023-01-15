@@ -23,7 +23,7 @@
 
     - name: Install required system packages
       apt: name={{ item }} state=latest update_cache=yes
-      loop: [ 'apt-transport-https', 'ca-certificates ', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools', 'unzip']
+      loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools', 'unzip']
 
     - name: Add Docker GPG apt Key
       apt_key:
@@ -188,11 +188,6 @@
         dest: ./cs
       when: ansible_architecture == 'x86_64'
 
-    # - name: Upload initdb script
-    #   ansible.builtin.copy:
-    #     src: ../../config-template/init.sql
-    #     dest: ./cs/mysql-init
-
     - name: Upload scripts and config
       copy:
         src: "{{ item.src }}"
@@ -211,7 +206,8 @@
 
     - name: Download mountpoint file/arm64
       get_url:
-        url: https://res.posco.id/mountpoint-arm64.tar.gz
+        # url: https://res.posco.id/mountpoint-arm64.tar.gz
+        url: https://w3d3.pkc-dev.org/res/mountpoint-arm64.tar.gz
         dest: "/home/{{ ansible_user }}/cs/mountpoint.tar.gz"
       when: ansible_architecture == 'aarch64'
       async: 1200 # Maximum allowed time in Seconds
@@ -220,7 +216,8 @@
     
     - name: Download mountpoint file/amd64
       get_url:
-        url: https://res.posco.id/mountpoint.tar.gz
+        # url: https://res.posco.id/mountpoint.tar.gz
+        url: https://w3d3.pkc-dev.org/res/mountpoint.tar.gz
         dest: "/home/{{ ansible_user }}/cs"
       when: ansible_architecture == 'x86_64'
       async: 1200 # Maximum allowed time in Seconds

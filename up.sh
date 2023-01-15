@@ -11,14 +11,14 @@ function prep_nginx {
     sed "s/#VS_SUBDOMAIN/$VS_SUBDOMAIN/g" ./config-template/vs.conf > ./config/vs.conf
 
     sed "s/#KCK_SUBDOMAIN/$KCK_SUBDOMAIN/g" ./config-template/kck.conf > ./config/kck.conf
-    # sed -i "s|#YOUR_DOMAIN|$YOUR_DOMAIN|g" ./config/kck.conf
+    sed -i "s|#YOUR_DOMAIN|$YOUR_DOMAIN|g" ./config/kck.conf
 
     sed "s/#QTUX_SUBDOMAIN/$QTUX_SUBDOMAIN/g" ./config-template/qtux.conf > ./config/qtux.conf
     sed "s/#SWG_SUBDOMAIN/$SWG_SUBDOMAIN/g" ./config-template/swg.conf > ./config/swg.conf
 
     sed "s/#YOUR_DOMAIN/$YOUR_DOMAIN/g" ./config-template/reverse-proxy.conf > ./config/reverse-proxy.conf
     sed "s/#YOUR_DOMAIN/$YOUR_DOMAIN/g" ./config-template/pkc.conf > ./config/pkc.conf
-    # sed -i "s|#KCK_SUBDOMAIN|$KCK_SUBDOMAIN|g" ./config/pkc.conf
+    sed -i "s|#KCK_SUBDOMAIN|$KCK_SUBDOMAIN|g" ./config/pkc.conf
 
     sed "s/#MDL_SUBDOMAIN/$MDL_SUBDOMAIN/g" ./config-template/mdl.conf > ./config/mdl.conf
     echo ""
@@ -27,42 +27,42 @@ function prep_nginx {
 #####################################################################
 function prep_local {
 
-    # check if we already have mountpoint file
-    if [ ! -f ./mountpoint.tar.gz ]; then
-        # download mountpoint from pkc.pub
-        echo "Download mountpoint"
-        wget -O mountpoint.tar.gz http://res.pkc.pub/mountpoint-mac.tar.gz
-    fi     
+    # # check if we already have mountpoint file
+    # if [ ! -f ./mountpoint.tar.gz ]; then
+    #     # download mountpoint from pkc.pub
+    #     echo "Download mountpoint"
+    #     wget -O mountpoint.tar.gz https://w3d3.pkc-dev.org/res/mountpoint-mac.tar.gz
+    # fi
 
-    # check if folder is already exists
-    if [ ! -e ./mountpoint ]; then
-        echo "Extracting mountpoint"
-        tar -xvf mountpoint.tar.gz > /dev/null 2>&1
-    fi
+    # # check if folder is already exists
+    # if [ ! -e ./mountpoint ]; then
+    #     echo "Extracting mountpoint"
+    #     tar -xvf mountpoint.tar.gz > /dev/null 2>&1
+    # fi
 
-    # copy LocalSettings.php
+    # # modify /etc/hosts
+    # sudo echo "127.0.0.1 pkc.local" >> /etc/hosts
+    # sudo echo "127.0.0.1 kck.pkc.local" >> /etc/hosts
+
+    # # copy LocalSettings.php
+    
     echo "Applying Localhost setting .... "
-    cp ./config/LocalSettings.php ./mountpoint/LocalSettings.php
-    # cp ./config/config.ini.php-local ./mountpoint/matomo/config/config.ini.php
-    # cp ./config-template/LocalSettings-local.php ./mountpoint/LocalSettings.php
-    # config/app.ini
-    cp ./config/app.ini ./mountpoint/gitea/gitea/conf/app.ini
-    # cp ./config/update-mtm-config.sql ./mountpoint/backup_restore/mariadb/update-mtm-config.sql
-    # docker composre file, consist of minimal installation
-    cp ./config-template/docker-compose-local.yml docker-compose.yml
+    # cp ./config/LocalSettings.php ./mountpoint/LocalSettings.php
+    # cp ./config/app.ini ./mountpoint/gitea/gitea/conf/app.ini
+    # cp ./config-template/docker-compose-local.yml docker-compose.yml
 }
 
 function prep_mw_localhost {
     echo "Prepare LocalSettings.php file"
     FQDN="$DEFAULT_TRANSPORT://$YOUR_DOMAIN:$PORT_NUMBER"
     # KCK_AUTH_FQDN="$DEFAULT_TRANSPORT://$YOUR_DOMAIN:$KCK_PORT_NUMBER"
-    KCK_AUTH_FQDN="https://kck.pkc-ops.org"
+    KCK_AUTH_FQDN="https://kck.pkc.pub"
     MTM_FQDN="$DEFAULT_TRANSPORT://$YOUR_DOMAIN:$MATOMO_PORT_NUMBER"
     GIT_FQDN="$DEFAULT_TRANSPORT://$YOUR_DOMAIN:$GITEA_PORT_NUMBER"
     #
     sed "s|#MTM_FQDN|$MTM_FQDN|g" ./config-template/LocalSettings-Local.php > ./config/LocalSettings.php
-    sed -i '' "s|#YOUR_FQDN|$FQDN|g" ./config/LocalSettings.php
-    sed -i '' "s|#KCK_SUBDOMAIN|$KCK_AUTH_FQDN|g" ./config/LocalSettings.php
+    sed -i "s|#YOUR_FQDN|$FQDN|g" ./config/LocalSettings.php
+    sed -i "s|#KCK_SUBDOMAIN|$KCK_AUTH_FQDN|g" ./config/LocalSettings.php
     #
     sed "s|#MTM_SUBDOMAIN|$MTM_FQDN|g" ./config-template/config.ini.php > ./config/config.ini.php
     #
@@ -73,7 +73,7 @@ function prep_mw_localhost {
 
 function prep_mw_domain {
     echo "Prepare LocalSettings.php file"
-    FQDN="$DEFAULT_TRANSPORT://www.$YOUR_DOMAIN"
+    FQDN="$DEFAULT_TRANSPORT://$YOUR_DOMAIN"
     KCK_AUTH_FQDN="$DEFAULT_TRANSPORT://kck.$YOUR_DOMAIN"
     MTM_FQDN="$DEFAULT_TRANSPORT://mtm.$YOUR_DOMAIN"
     MTM_ROOT="mtm.$YOUR_DOMAIN"
@@ -112,14 +112,19 @@ function prep_vars {
     echo $domain
     echo $default_transport
     echo $email
+    echo $pkc_install_root_dir
 }
 
 # Read .env, and present our plan to user
 echo "Mark Started Process at $(date)"
+# Prepare .env file
+echo "Preparing env file"
+ansible-playbook -i ./resources/config/hosts ./resources/ansible-yml/cs-prep-env.yml
+
 
 if [ -f .env ]; then
     export $(cat .env | grep -v '#' | awk '/=/ {print $1}')
-    if [ "$YOUR_DOMAIN" == "localhost" ]; then {
+    if [ "$YOUR_DOMAIN" == "pkc.local" ]; then {
         GITEA_SUBDOMAIN=$YOUR_DOMAIN:$GITEA_PORT_NUMBER
         PMA_SUBDOMAIN=$YOUR_DOMAIN:$PHP_MA
         MTM_SUBDOMAIN=$YOUR_DOMAIN:$MATOMO_PORT_NUMBER
@@ -142,21 +147,43 @@ if [ -f .env ]; then
         read -p "Press [Enter] key to continue..."
         echo "--------------------------------------------------------"
 
+        prep_vars
         prep_mw_localhost
-        read -p "finished prepare Configuration for Localhost config Press [Enter] key to continue..."
+        echo "finished prepare Configuration for Localhost config"
+        # read -p "finished prepare Configuration for Localhost config Press [Enter] key to continue..."
+
         prep_local
-        read -p "finished prepare mountpoint for Localhost Press [Enter] key to continue..."
+        # read -p "finished prepare mountpoint for Localhost Press [Enter] key to continue..."
+        echo "finished prepare mountpoint for Localhost "
 
         # run ansible playbook
         echo "Running localhost ansible playbook, please provide password when ask."
-        ansible-playbook ./resources/ansible-yml/cs-up-local.yml --connection=local --ask-become-pass
+        ansible-playbook -i ./resources/config/hosts ./resources/ansible-yml/cs-up-local.yml --ask-become-pass
+
+        # run docker-compose
+        # CMD_VARS="ssh -i $ansible_ssh_private_key_file $ansible_user@$ansible_host_name 'security -v unlock-keychain ~/Library/Keychains/login.keychain-db; export PATH="$PATH:/usr/local/bin"; cd $pkc_install_root_dir/cs; docker-compose pull'"
+        # echo $CMD_VARS
+        # eval $CMD_VARS >/dev/null
+        # docker-compose pull
+        
+        # CMD_VARS="ssh -i $ansible_ssh_private_key_file $ansible_user@$ansible_host_name 'security -v unlock-keychain ~/Library/Keychains/login.keychain-db; export PATH="$PATH:/usr/local/bin"; cd $pkc_install_root_dir/cs; docker-compose up -d'"
+        # echo $CMD_VARS
+        # eval $CMD_VARS >/dev/null
+        # docker-compose up -d
+    
+        # run update hosts script
+        # CMD_VARS="ssh -i $ansible_ssh_private_key_file $ansible_user@$ansible_host_name 'export PATH="$PATH:/usr/local/bin"; cd $pkc_install_root_dir/cs; ./update-sw.sh'"
+        # echo $CMD_VARS
+        # eval $CMD_VARS > /dev/null
+        # ./cs/update-sw.sh
+
         # 
         echo "Wait 10 second for service to ready"
         sleep 5 
 
         # run maintenance script
         echo "Running maintenance script"
-        docker exec xlp_mediawiki php /var/www/html/maintenance/update.php --quick # > /dev/null 2>&1
+        # docker exec xlp_mediawiki php /var/www/html/maintenance/update.php --quick # > /dev/null 2>&1
         # ansible-playbook ./resources/ansible-yml/cs-test.yml --connection=local
 
         # display login information
@@ -168,13 +195,9 @@ if [ -f .env ]; then
         echo "your browser "
         echo "http://pkc.local"
         echo "---------------------------------------------------------------------------"
-        open http://pkc.local
+        # open http://pkc.local
 
     } else {
-
-        # Prepare .env file
-        echo "Preparing env file"
-        ansible-playbook -i ./resources/config/hosts ./resources/ansible-yml/cs-prep-env.yml
 
         # read the .env file
         export $(cat .env | grep -v '#' | awk '/=/ {print $1}')

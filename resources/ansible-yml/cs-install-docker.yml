@@ -1,0 +1,97 @@
+---
+- name: install docker pre-requisite
+  hosts: all
+  become: yes
+  vars:
+    - docker_version: "latest"
+
+  tasks:
+  # - name: Ubuntu Installation Process
+  #   block:
+  #   - name: "apt-get update"    
+  #     apt:
+  #       update_cache: yes
+  #       cache_valid_time: 3600
+
+  #   - name: "install nginx"
+  #     apt:
+  #       name: ['nginx','haveged']
+  #       state: latest
+
+  #   - name: Install aptitude using apt
+  #     apt: name=aptitude state=latest update_cache=yes force_apt_get=yes
+  #     ignore_errors: yes
+
+  #   - name: Install required system packages
+  #     apt: name={{ item }} state=latest update_cache=yes
+  #     loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools', 'unzip']
+
+  #   - name: Add Docker GPG apt Key
+  #     apt_key:
+  #       url: https://download.docker.com/linux/ubuntu/gpg
+  #       state: present
+
+  #   - name: Add Docker Repository
+  #     apt_repository:
+  #       repo: deb https://download.docker.com/linux/ubuntu bionic stable
+  #       state: present
+
+  #   - name: Update apt and install docker-ce
+  #     apt: update_cache=yes name=docker-ce state=latest
+
+  #   - name: Install Docker Module for Python
+  #     pip:
+  #       name: 
+  #         - docker
+  #         - docker-compose
+
+  #   - name: install docker compose    
+  #     get_url:
+  #       url: https://github.com/docker/compose/releases/download/1.27.3/docker-compose-Linux-x86_64
+  #       dest: /usr/local/bin/docker-compose
+  #       mode: 755
+
+  #   - name: Create group
+  #     group:
+  #       name: "docker"
+  #       state: present
+
+  #   - name: Adding user {{ ansible_user }}
+  #     user: name="{{ ansible_user }}"
+  #           groups=docker
+  #           append=yes
+    
+  #   - name : Install Python Package
+  #     apt: name=python3 update_cache=yes state=latest
+
+  #   - name : Install Let's Encrypt Package
+  #     apt: name=certbot update_cache=yes state=latest
+
+  #   - name : Install Let's Encrypt Package
+  #     apt: name=python3-certbot-nginx update_cache=yes state=latest
+
+    - name: Clone a repo with separate git directory
+      ansible.builtin.git:
+        repo: https://github.com/Personal-Knowledge-Container/ecatalogue-proto.git
+        dest: ./
+
+    - name: Change Images Ownership Folder
+      ansible.builtin.file:
+        path: ./storage
+        state: directory
+        recurse: yes
+        owner: www-data
+
+    - name: Change Images Ownership Folder
+      ansible.builtin.file:
+        path: ./ecatalogue
+        state: directory
+        recurse: yes
+        owner: www-data
+
+    - name: Change Images Ownership Folder
+      ansible.builtin.file:
+        path: ./operands
+        state: directory
+        recurse: yes
+        owner: www-data

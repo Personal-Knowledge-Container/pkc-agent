@@ -1,0 +1,1 @@
+pkc-lkpp.dev ansible_connection=ssh ansible_ssh_private_key_file=~/.ssh/aws-jkt-emhavis-1.pem ansible_user=ubuntu domain=pkc-lkpp.dev default_transport=https email=emhavis@gmail.com brl=src retention=1 pkc_install_root_dir=/home/ubuntu/cs/
