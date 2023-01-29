@@ -1,21 +1,12 @@
-# ---
-# - name: create backup files and download to local host, and restore it
-#   hosts: all
-#   vars:
-#     ansible_ssh_strict_host_key_checking: False
+# This playbook backups all mysql databases into separate files. and download to your local pkc instance
+# example of command
+# docker container run --rm \
+# --name pkc-agent \
+# -v /Users/emhavis/pkc-local/cs/mountpoint/backup_restore:/pkc-agent/backup/ \
+# -v /Users/emhavis/pkc-org/pkc-agent/resources/config/host-pkcpub-aws:/pkc-agent/resources/config/hosts \
+# -v /Users/emhavis/.ssh/prof-koo-aws.pem:/root/.ssh/prof-koo-aws.pem \
+# -it emhavis/pkc_agent:dev /pkc-agent/ansible-playbook -i ./resources/config/hosts ./resources/ansible-yml/cs-backup-local-cloud.yml --ask-become-pass
 
-#   tasks:
-#   - name: create backup files from server
-
-#   - name: download the backup file from server
-
-#   - name: restore backup files to host
-
-# This playbook backups all mysql databases into separate files.
-#
-# How to execute on project root folder
-# cd /home/pi/PKC && ansible-playbook -i ./resources/config/host-pkcpub-aws ./resources/ansible-yml/cs-backup-remote.yml
-# put map to current pkc's folder
 # 
 #
 ---
@@ -33,7 +24,7 @@
     #     docker_cmd: "mysqldump --single-transaction --host=database --user=root --password=secret my_wiki | gzip > /mnt/backup_restore/mariadb/{{ ansible_host }}-my_wiki-{{ ansible_date_time.iso8601_basic_short }}.sql.gz; exit $?"
     - name: Upload LocalSettings.php and other setting
       copy:
-        src: "{{ item.src }}"e
+        src: "{{ item.src }}"
         - {src: '../script/update-sw.sh', dest: '{{ pkc_install_root_dir }}/cs/update-sw.sh'}
         - {src: '../script/update-hosts.sh', dest: '{{ pkc_install_root_dir }}/cs/update-hosts.sh'}
 
