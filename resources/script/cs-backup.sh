@@ -142,7 +142,7 @@ function export_sql {
 # --host=database --default-character-set=$DB_CHARSET \
 # --user=root --password=secret > /mnt/backup_restore/mariadb/${PREFIX}-database-${DB_CHARSET}.sql.gz; exit $?"
 
-    DOCKER_CMD="mysqldump --all-databases --single-transaction --host=${DB_HOST} --user=root --password=secret | gzip > /mnt/backup_restore/mariadb/${YOUR_DOMAIN}-${PREFIX}-database.sql.gz; exit $?"
+    DOCKER_CMD="mysqldump --all-databases --single-transaction --host=${DB_HOST} --user=wikiuser --password=secret | gzip > /mnt/backup_restore/mariadb/${YOUR_DOMAIN}-${PREFIX}-database.sql.gz; exit $?"
 
     echo "Previewing docker command: $DOCKER_CMD"
     docker exec -t xlp_mariadb /bin/bash -c "$DOCKER_CMD"
