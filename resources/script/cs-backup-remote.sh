@@ -6,7 +6,7 @@
 function prep_vars {
     # echo "Reading values from hosts file into variable"
 
-    rm ./temp-out
+    rm -f ./temp-out
     touch ./temp-out
     sentence=$(cat ./host-pkcpub-aws)
     for word in $sentence
@@ -49,5 +49,5 @@ scp -i $ansible_ssh_private_key_file $ansible_user@$ansible_host_name:/$pkc_inst
 
 # /home/ubuntu/cs/mountpoint/backup_restore/mariadb/
 # /home/ubuntu/cs/mountpoint/backup_restore/mariadb/
-
+# wget -O - http://dl.dropbox.com/u/11210438/flockonus-stack.sh | bash
 # /home/ubuntu/cs/mountpoint/backup_restore/mediawiki/
