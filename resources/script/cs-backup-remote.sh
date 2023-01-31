@@ -29,8 +29,8 @@ prep_vars
 #
 #
 CMD_VARS="ssh -i $ansible_ssh_private_key_file $ansible_user@$ansible_host_name 'export PATH="$PATH:/usr/local/bin"; cd /$pkc_install_root_dir; ./cs-backup.sh -w /home/ubuntu/cs/mountpoint'"
-# echo $CMD_VARS
-# eval $CMD_VARS
+echo $CMD_VARS
+eval $CMD_VARS
 #
 #
 # download result to ../../backup/mariadb
