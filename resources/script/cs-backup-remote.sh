@@ -38,13 +38,13 @@ CMD_VARS="ssh -i $ansible_ssh_private_key_file $ansible_user@$ansible_host_name 
 # echo $CMD_VARS
 mysqlfile=$(eval $CMD_VARS)
 echo $mysqlfile
-scp -i $ansible_ssh_private_key_file $ansible_user@$ansible_host_name:/$pkc_install_root_dir/mountpoint/backup_restore/mariadb/$mysqlfile .
+scp -i $ansible_ssh_private_key_file $ansible_user@$ansible_host_name:/$pkc_install_root_dir/mountpoint/backup_restore/mariadb/$mysqlfile ./cs/mountpoint/backup_restore/mariadb
 
 # download result to ../../backup/mediawiki
 CMD_VARS="ssh -i $ansible_ssh_private_key_file $ansible_user@$ansible_host_name 'ls -t1q /home/ubuntu/cs/mountpoint/backup_restore/mediawiki/ | head -n1'"
 mediafile=$(eval $CMD_VARS)
 echo $mediafile
-scp -i $ansible_ssh_private_key_file $ansible_user@$ansible_host_name:/$pkc_install_root_dir/mountpoint/backup_restore/mediawiki/$mediafile .
+scp -i $ansible_ssh_private_key_file $ansible_user@$ansible_host_name:/$pkc_install_root_dir/mountpoint/backup_restore/mediawiki/$mediafile ./cs/mountpoint/backup_restore/mediawiki
 
 
 # /home/ubuntu/cs/mountpoint/backup_restore/mariadb/
