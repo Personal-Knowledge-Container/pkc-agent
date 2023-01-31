@@ -5,7 +5,7 @@
 echo Job started at "$(date)"
 
 # 1. get my_wiki
-WIKI_DB_FILE=$(cd ./mountpoint/backup_restore/mariadb/ &&  ls *my_wiki* -Arth | tail -n 1)
+WIKI_DB_FILE=$(cd ./mountpoint/backup_restore/mariadb/ &&  ls *database* -Arth | tail -n 1)
 echo Get latest Mediawiki file: $WIKI_DB_FILE
 
 # 2. get image file
