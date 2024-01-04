@@ -1,0 +1,1 @@
+nin-pkc-pub ansible_connection=ssh ansible_ssh_private_key_file=~/.ssh/id_rsa ansible_user=gasing domain=pkc-pub brl=src retention=1 pkc_install_root_dir=/home/pkc/cs/

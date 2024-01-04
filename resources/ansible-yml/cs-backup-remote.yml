@@ -65,8 +65,8 @@
       become: yes
       register: output
       loop:
-        - "{{ ansible_env.PWD }}/cs/mountpoint/backup_restore/mariadb/"
-        - "{{ ansible_env.PWD }}/cs/mountpoint/backup_restore/mediawiki/"
+        - "{{ pkc_install_root_dir }}mountpoint/backup_restore/mariadb/"
+        - "{{ pkc_install_root_dir }}mountpoint/backup_restore/mediawiki/"
 
     # when: "inventory_hostname|string == src_server"
     when: "hostvars[inventory_hostname].brl == 'src'"
@@ -78,7 +78,7 @@
     # Mediawiki Database Backup------------------------------------------------------------------------
     - name: Get database backup file
       find:
-        paths: "{{ ansible_env.PWD }}/cs/mountpoint/backup_restore/mariadb/"
+        paths: "{{ pkc_install_root_dir }}mountpoint/backup_restore/mariadb/"
         patterns: '*my_wiki*'
       register: found_files
     
