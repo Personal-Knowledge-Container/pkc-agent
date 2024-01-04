@@ -200,7 +200,8 @@ services:
     container_name: xlp_mongo
     image: mongo
     volumes:
-      - ./mountpoint/mongo_data:/data/db        # pth for the data to be stored and kept on your host machine is on the left side of the ":"
+      - ./mountpoint/mongo_data:/data/db                    # pth for the data to be stored and kept on your host machine is on the left side of the ":"
+      - ./mountpoint/backup_restore/mongodb:/mongo-backup   # path for mongodb backup-restore
     networks:
       pkcnet:
         ipv4_address: 192.168.100.65

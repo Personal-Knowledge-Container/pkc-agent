@@ -1,0 +1,19 @@
+---
+# This playbook backups mongodb database into [your-domain]dump.gz file
+#
+# How to execute on project root folder
+# cd /home/pi/PKC && ansible-playbook -i ./resources/config/hosts-pkc-dev ./resources/ansible-yml/cs-backup-mongo.yml
+# 
+#
+- name: Backup Mongodb
+  hosts: all
+  gather_facts: yes
+  become: yes
+  become_user: root
+
+  tasks:
+  - name: Execute mongodb backup at container on {{ hostvars[inventory_hostname].inventory_hostname }}
+    command: "docker exec -t xlp_mongo /bin/bash -c 'cd mongo-backup-restore && mongodump --archive=pkc-dev-{{ ansible_date_time.iso8601_basic_short }}.archive --gzip'"
+    become: yes
+    register: output
+     # cd mongo-backup-restore && mongodump --archive=pkc-dev-{{ ansible_date_time.iso8601_basic_short }}.archive --gzip
